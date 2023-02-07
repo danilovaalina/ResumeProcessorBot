@@ -2,6 +2,7 @@ package io.project.ResumeProcessorBot.service;
 
 
 import io.project.ResumeProcessorBot.config.TelegramConfig;
+import io.project.component.Icon;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,7 +13,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 @Component
 @AllArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
@@ -44,9 +44,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                 String text = new PdfConverter().getTextFromPdf(download);
                 if (text.contains("Данилова") || text.contains("Алина")) {
-                    sendMessage(chatId, "Прекрасное резюме! Вы привлечёте многих работодателей!");
+                    sendMessage(chatId, "Прекрасное резюме! Вы привлечёте многих работодателей!" + Icon.FUNNY.get());
                 } else {
-                    sendMessage(chatId, "Ваше ре");
+                    sendMessage(chatId, "Ваше резюме не до конца проработано" + Icon.SAD.get() + " Жду изменений!");
                 }
             }
             catch (MalformedURLException e) {
@@ -68,9 +68,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void startCommandReceived(Long chatId, String name) {
-        String answer = "Привет, " + name + "!" +
-                "\nЯ бот, который занимается обработкой резюме и оценивает его качество. " +
-                "\nВы можете отправить мне резюме в формате PDF";
+        String answer = "Привет, " + name + "!" + Icon.HELLO.get()
+                + "\nЯ бот" + Icon.ROBOT.get()
+                + ", который занимается обработкой резюме" + Icon.DOCUMENT.get()
+                + " и оценивает его качество" + Icon.GRADE.get() +
+                "\nВы можете отправить мне резюме в формате PDF" + Icon.FILE.get();
         sendMessage(chatId, answer);
     }
 

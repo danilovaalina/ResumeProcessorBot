@@ -6,7 +6,6 @@ import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.net.URL;
 @Data
 @Component
 @NoArgsConstructor
-@RequiredArgsConstructor
 
 public class PdfConverter {
     private PdfReader pdfReader;
