@@ -1,4 +1,4 @@
-package io.project.component;
+package io.project.ResumeProcessorBot.component;
 
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AllArgsConstructor;
