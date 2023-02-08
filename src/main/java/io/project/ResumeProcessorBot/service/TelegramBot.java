@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 @Component
 @AllArgsConstructor
@@ -33,28 +32,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
         if (update.hasMessage() && update.getMessage().hasDocument()) {
-            URL url = null;
-            try {
-                Document document = update.getMessage().getDocument();
-                FileService fileService = new FileService(config);
-                String uploadedFileId = fileService.getFileId(document);
-
-                url = new URL("https://api.telegram.org/bot" + config.getBotToken() + "/getFile?file_id=" + uploadedFileId);
-                URL download = fileService.urlForDownloadFile(url);
-
-                String text = new PdfConverter().getTextFromPdf(download);
-                if (text.contains("Данилова") || text.contains("Алина")) {
-                    sendMessage(chatId, "Прекрасное резюме! Вы привлечёте многих работодателей!" + Icon.FUNNY.get());
-                } else {
-                    sendMessage(chatId, "Ваше резюме не до конца проработано" + Icon.SAD.get() + " Жду изменений!");
-                }
-            }
-            catch (MalformedURLException e) {
-                System.out.println("Неверный URL-адрес: " + url +
-                        "\nСтрока не может быть проанализирована или без надлежащего протокола");
+            Document document = update.getMessage().getDocument();
+            FileService fileService = new FileService(config);
+            URL download = fileService.urlForDownloadFile(document);
+            String text = new PdfConverter().getTextFromPdf(download);
+            if (text.contains("Данилова") || text.contains("Алина")) {
+                sendMessage(chatId, "Прекрасное резюме! Вы привлечёте многих работодателей!" + Icon.FUNNY.get());
+            } else {
+                sendMessage(chatId, "Ваше резюме не до конца проработано" + Icon.SAD.get() + " Жду изменений!");
             }
         }
-
     }
 
     @Override
