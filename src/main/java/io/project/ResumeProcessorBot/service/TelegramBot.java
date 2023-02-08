@@ -2,8 +2,9 @@ package io.project.ResumeProcessorBot.service;
 
 
 import io.project.ResumeProcessorBot.config.TelegramConfig;
-import io.project.component.Icon;
+import io.project.ResumeProcessorBot.component.Icon;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URL;
+@Slf4j
 @Component
 @AllArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
@@ -60,6 +62,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 + ", который занимается обработкой резюме" + Icon.DOCUMENT.get()
                 + " и оценивает его качество" + Icon.GRADE.get() +
                 "\nВы можете отправить мне резюме в формате PDF" + Icon.FILE.get();
+
+        log.info("Replied to user " + name);
+
         sendMessage(chatId, answer);
     }
 
@@ -71,7 +76,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            System.out.println("Не удалось отправить сообщение пользователю");
+            log.error("Не удалось отправить сообщение пользователю");
         }
     }
 }

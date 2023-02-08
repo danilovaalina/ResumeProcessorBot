@@ -6,11 +6,13 @@ import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 
+@Slf4j
 @Data
 @Component
 @NoArgsConstructor
@@ -28,7 +30,7 @@ public class PdfConverter {
                 text.append(resultOfText);
             }
         } catch (IOException io) {
-            System.out.println("Возникла ошибка при чтении файла");
+           log.error("Возникла ошибка при чтении файла");
         }
         return text.toString();
     }
