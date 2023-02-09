@@ -2,7 +2,6 @@ package io.project.ResumeProcessorBot.config;
 
 import io.project.ResumeProcessorBot.service.TelegramBot;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -13,9 +12,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Slf4j
 @Component
-@NoArgsConstructor
 @AllArgsConstructor
 public class BotInitializer {
+
     TelegramBot bot;
 
     @EventListener({ContextRefreshedEvent.class})
