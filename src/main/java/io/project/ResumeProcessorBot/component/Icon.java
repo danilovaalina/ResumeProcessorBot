@@ -11,7 +11,8 @@ public enum Icon {
     ROBOT(":robot_face:"),
     DOCUMENT(":page_facing_up:"),
     GRADE(":writing_hand:"),
-    FILE(":file_folder:")
+    FILE(":file_folder:"),
+    EXCLAMATION(":exclamation:")
     ;
 
     private final String value;
