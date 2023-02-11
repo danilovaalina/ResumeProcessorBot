@@ -3,6 +3,7 @@ package io.project.ResumeProcessorBot.service;
 
 import io.project.ResumeProcessorBot.config.TelegramConfig;
 import io.project.ResumeProcessorBot.component.Icon;
+import io.project.ResumeProcessorBot.database.JavaDeveloperRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -23,9 +24,11 @@ import java.util.List;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramConfig config;
+    private  JavaDeveloperRepository javaDeveloperRepository;
 
-    public TelegramBot(TelegramConfig config) {
+    public TelegramBot(TelegramConfig config, JavaDeveloperRepository javaDeveloperRepository) {
         this.config = config;
+        this.javaDeveloperRepository = javaDeveloperRepository;
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "get introductory message"));
         listOfCommands.add(new BotCommand("/help", "info how to use bot"));
