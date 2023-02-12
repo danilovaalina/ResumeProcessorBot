@@ -1,34 +1,34 @@
 package io.project.ResumeProcessorBot.database;
 
-import com.vladmihalcea.hibernate.type.array.ListArrayType;
-import lombok.Data;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Data
 @Entity
 @Table(name = "java_developer")
-@TypeDef(
-        name = "string-list",
-        typeClass = ListArrayType.class
-)
 public class JavaDeveloper {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "position")
     private String position;
 
-    @Type(type = "string-list")
-    @Column(
-            name = "technology_stack",
-            columnDefinition = "text[]"
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "technology_stack_java_developer",
+            joinColumns = @JoinColumn(name = "java_developer_id"),
+            inverseJoinColumns = @JoinColumn(name = "technology_id")
     )
-    private List<String> technologyStack;
+    private List<TechnologyStack> technologyStack = new ArrayList<>();
 
 }
