@@ -21,9 +21,11 @@ public class JavaDeveloper {
     @Column(name = "position")
     private String position;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
     })
     @JoinTable(name = "technology_stack_java_developer",
             joinColumns = @JoinColumn(name = "java_developer_id"),

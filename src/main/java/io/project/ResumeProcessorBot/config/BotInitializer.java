@@ -1,6 +1,6 @@
 package io.project.ResumeProcessorBot.config;
 
-import io.project.ResumeProcessorBot.service.TelegramBot;
+import io.project.ResumeProcessorBot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
