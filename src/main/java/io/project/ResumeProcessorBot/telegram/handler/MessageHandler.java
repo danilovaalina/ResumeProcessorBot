@@ -1,7 +1,7 @@
 package io.project.ResumeProcessorBot.telegram.handler;
 
-import io.project.ResumeProcessorBot.component.Icon;
-import io.project.ResumeProcessorBot.constant.ProgrammingLanguageButton;
+import io.project.ResumeProcessorBot.telegram.constant.Icon;
+import io.project.ResumeProcessorBot.telegram.constant.SpecialistButton;
 import io.project.ResumeProcessorBot.service.FileService;
 import io.project.ResumeProcessorBot.telegram.keyboard.InlineKeyBoardMarker;
 import lombok.AccessLevel;
@@ -15,6 +15,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
+
+import static io.project.ResumeProcessorBot.telegram.constant.SpecialistButton.*;
 
 @Slf4j
 @Component
@@ -76,7 +78,7 @@ public class MessageHandler {
     private SendMessage nextMessage(Long chatId) {
         String answer = "Выберите язык программирования, с которым вы работаете:";
 
-        InlineKeyboardMarkup markupInLine = inlineKeyBoardMarker.getInlineMessageButtons(ProgrammingLanguageButton.class);
+        InlineKeyboardMarkup markupInLine = inlineKeyBoardMarker.getInlineMessageButtons(SpecialistButton.class);
 
         SendMessage sendMessage = sendMessage(chatId, answer);
         sendMessage.setReplyMarkup(markupInLine);
@@ -93,13 +95,25 @@ public class MessageHandler {
     private String processFile(Document document) {
         String textToSend = null;
         List<String> buttonCombination = CallbackQueryHandler.buttonCombination;
-        if (buttonCombination.size() == 2) {
-            if (buttonCombination.get(0).equals("JAVA_BUTTON")) {
-                switch (buttonCombination.get(1)) {
-                    case "JUNIOR_BUTTON" -> textToSend = fileService.processFileForJavaDeveloper(document, 1L);
-                    case "MIDDLE_BUTTON" -> textToSend = fileService.processFileForJavaDeveloper(document, 2L);
-                    case "SENIOR_BUTTON" -> textToSend = fileService.processFileForJavaDeveloper(document, 3L);
-                }
+        if (buttonCombination.size() == 1) {
+            if (buttonCombination.get(0).equals(JAVA_JUNIOR_BUTTON.name())) {
+                  textToSend = fileService.processFile(document, 3L);
+            } else if (buttonCombination.get(0).equals(JAVA_MIDDLE_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 4L);
+            } else if (buttonCombination.get(0).equals(JAVA_SENIOR_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 5L);
+            } else if (buttonCombination.get(0).equals(PYTHON_JUNIOR_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 6L);
+            } else if (buttonCombination.get(0).equals(PYTHON_MIDDLE_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 7L);
+            } else if (buttonCombination.get(0).equals(PYTHON_SENIOR_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 8L);
+            } else if (buttonCombination.get(0).equals(GO_JUNIOR_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 9L);
+            } else if (buttonCombination.get(0).equals(GO_MIDDLE_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 10L);
+            } else if (buttonCombination.get(0).equals(GO_SENIOR_BUTTON.name())) {
+                textToSend = fileService.processFile(document, 11L);
             }
         } else {
             textToSend = "Не удалось обработать файл " + Icon.SAD.get() + " Нажмите команду /next, чтобы попробовать снова";

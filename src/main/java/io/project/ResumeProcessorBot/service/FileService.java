@@ -1,10 +1,11 @@
 package io.project.ResumeProcessorBot.service;
 
-import io.project.ResumeProcessorBot.component.Icon;
+import io.project.ResumeProcessorBot.converter.PdfConverter;
+import io.project.ResumeProcessorBot.telegram.constant.Icon;
 import io.project.ResumeProcessorBot.config.TelegramConfig;
-import io.project.ResumeProcessorBot.database.JavaDeveloper;
-import io.project.ResumeProcessorBot.database.JavaDeveloperRepository;
-import io.project.ResumeProcessorBot.database.TechnologyStack;
+import io.project.ResumeProcessorBot.entity.Skill;
+import io.project.ResumeProcessorBot.entity.Specialist;
+import io.project.ResumeProcessorBot.repository.SpecialistRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,7 +28,7 @@ import java.util.Optional;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class FileService {
     TelegramConfig config;
-    JavaDeveloperRepository repository;
+    SpecialistRepository repository;
 
     private  String getFileId(Document document) {
         return document.getFileId();
@@ -75,28 +76,34 @@ public class FileService {
         return textToSend;
     }
 
-    public  String processFileForJavaDeveloper(Document document, Long positionId) {
+    public  String processFile(Document document, Long positionId) {
         URL download = urlForDownloadFile(document);
         String text = new PdfConverter().getTextFromPdf(download);
-        Optional<JavaDeveloper> developer= repository.findById(positionId);
-        List<TechnologyStack> technologyStacks = new ArrayList<>();
-        if (developer.isPresent()) {
-            technologyStacks = developer.get().getTechnologyStack();
+        Optional<Specialist> specialist = repository.findById(positionId);
+        List<Skill> skills = new ArrayList<>();
+        if (specialist.isPresent()) {
+            skills = specialist.get().getSkills();
         }
         StringBuilder stringBuilder = new StringBuilder();
-        for (TechnologyStack stack : technologyStacks) {
-            stringBuilder.append(stack.getTechnology());
+        for (Skill skill : skills) {
+            stringBuilder.append(skill.getSkill());
             stringBuilder.append(" ");
         }
         String [] technologies = stringBuilder.toString().split(" ");
         StringBuilder unexploredTechnologies = new StringBuilder();
         int count = 0;
-        for (String technology : technologies) {
-            if (text.toUpperCase().contains(technology.toUpperCase())) {
-                count++;
-            } else {
-                unexploredTechnologies.append(technology);
-                unexploredTechnologies.append("\n");
+        for (int i = 0; i < technologies.length - 1; i++) {
+                if (Character.isDigit(technologies[i + 1].charAt(0))) {
+                    technologies[i] = technologies[i] + " " + technologies[i + 1];
+                    technologies[i + 1] = null;
+                }
+            if (technologies[i] != null) {
+                if (text.toUpperCase().contains(technologies[i].toUpperCase())) {
+                    count++;
+                } else {
+                    unexploredTechnologies.append(technologies[i]);
+                    unexploredTechnologies.append("\n");
+                }
             }
         }
 

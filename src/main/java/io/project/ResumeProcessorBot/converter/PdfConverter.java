@@ -1,4 +1,4 @@
-package io.project.ResumeProcessorBot.service;
+package io.project.ResumeProcessorBot.converter;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;

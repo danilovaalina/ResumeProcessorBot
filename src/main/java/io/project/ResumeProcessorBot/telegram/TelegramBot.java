@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import static io.project.ResumeProcessorBot.component.BotCommands.LIST_OF_COMMANDS;
+import static io.project.ResumeProcessorBot.telegram.component.BotCommands.LIST_OF_COMMANDS;
 
 @Slf4j
 @Component

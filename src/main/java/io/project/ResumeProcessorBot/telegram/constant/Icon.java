@@ -1,4 +1,4 @@
-package io.project.ResumeProcessorBot.component;
+package io.project.ResumeProcessorBot.telegram.constant;
 
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
@@ -13,6 +13,7 @@ public enum Icon {
     LUCK(":pray:"),
     HELLO(":raised_hand:"),
     ROBOT(":robot_face:"),
+
     DOCUMENT(":page_facing_up:"),
     GRADE(":writing_hand:"),
     FILE(":file_folder:"),

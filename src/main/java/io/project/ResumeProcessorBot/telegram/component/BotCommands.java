@@ -1,4 +1,4 @@
-package io.project.ResumeProcessorBot.component;
+package io.project.ResumeProcessorBot.telegram.component;
 
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 
