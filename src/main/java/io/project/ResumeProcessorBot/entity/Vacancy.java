@@ -2,9 +2,12 @@ package io.project.ResumeProcessorBot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
+
 @Getter
 @Setter
 @Entity
+@Component
 @Table(name = "vacancies")
 @NoArgsConstructor
 @AllArgsConstructor

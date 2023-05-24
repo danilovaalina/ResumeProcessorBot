@@ -1,18 +1,18 @@
 package io.project.ResumeProcessorBot.config;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @Data
-@PropertySource("application.properties")
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TelegramConfig {
-    @Value("${bot.name}")
+    @Value("${telegram.bot-name}")
     String botName;
 
-    @Value("${bot.token}")
+    @Value("${telegram.bot-token}")
     String botToken;
 }

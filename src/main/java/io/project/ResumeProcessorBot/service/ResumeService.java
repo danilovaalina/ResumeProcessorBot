@@ -7,7 +7,6 @@ import io.project.ResumeProcessorBot.utils.ListUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class ResumeService {
    VacancyService vacancyService;
    Resume resume;
 
-   public String getResultResume(@NotNull String fileText, String vacancyName) {
+   public String getResultResume(String fileText, String vacancyName) {
       if (fileText.isEmpty() | fileText.isBlank()) return "Вы отправили пустой файл";
 
       List<String> requirementList = getRequirements(vacancyName);
@@ -40,7 +39,7 @@ public class ResumeService {
       }
    }
 
-   private @NotNull String getAbsentSkills(String fileText, List<String> requirementList) {
+   private String getAbsentSkills(String fileText, List<String> requirementList) {
       List<String> sentenceList = ListUtils.getSentenceList(fileText);
       List<List<String>> sentenceLists = ListUtils.turnListIntoListOfLists(sentenceList);
 
@@ -74,7 +73,7 @@ public class ResumeService {
       return absentSkills.toString();
    }
 
-   private @NotNull List<String> getRequirements(String vacancyName) {
+   private List<String> getRequirements(String vacancyName) {
       StringBuilder requirements = new StringBuilder();
       for (Vacancy vacancy : vacancyService.getVacancies(vacancyName)) {
          requirements.append(vacancy.getRequirement());

@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,14 +25,12 @@ import java.util.Scanner;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class VacancyService {
-    VacancyRepository vacancyRepository;
-    Vacancy vacancy;
-
+    final VacancyRepository vacancyRepository;
+    final Vacancy vacancy;
     @Value("${hh-ru.api-url}")
     String URL;
-
 
     public List<Vacancy> getVacancies(String vacancyName) {
         List<Vacancy> vacancies = vacancyRepository.searchByName(vacancyName);
@@ -71,7 +68,7 @@ public class VacancyService {
         vacancyRepository.saveAll(vacancies);
     }
 
-    private @NotNull String getResult(String vacancyName) {
+    private String getResult(String vacancyName) {
         StringBuilder result = new StringBuilder();
         try {
             String paramValue = URLEncoder.encode(vacancyName, StandardCharsets.UTF_8);
