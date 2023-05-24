@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.project</groupId>
@@ -15,29 +15,14 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>19</java.version>
-		<telegram.version>6.4.0</telegram.version>
-		<!--
-		<hibernate.version>5.6.14.Final</hibernate.version>
-		<hibernate-types.version>2.20.0</hibernate-types.version>
-		-->
+		<telegram.version>6.5.0</telegram.version>
+		<postgresql.version>42.5.4</postgresql.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -56,9 +41,43 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.9.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-inline</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.24.2</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20230227</version>
 		</dependency>
 
 		<dependency>
@@ -80,12 +99,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>4.9.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
 			<version>5.5.13.3</version>
@@ -97,7 +110,56 @@
 			<version>3.3.0</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
+
+	<!--<profiles>
+		<profile>
+			<id>unit-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/ut/**/*.class</include>
+							</includes>
+							<excludes>
+								<exclude>**/it/**/*.class</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>integration-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/it/**/*.class</include>
+							</includes>
+							<excludes>
+								<exclude>**/ut/**/*.class</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>-->
 
 	<build>
 		<plugins>
@@ -116,6 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
                 <configuration>
                     <source>18</source>
                     <target>18</target>
