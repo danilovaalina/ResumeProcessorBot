@@ -1,9 +1,10 @@
 package io.project.ResumeProcessorBot.telegram.handler;
 
+import io.project.ResumeProcessorBot.service.ResumeService;
 import io.project.ResumeProcessorBot.telegram.constant.Icon;
-import io.project.ResumeProcessorBot.telegram.constant.SpecialistButton;
-import io.project.ResumeProcessorBot.service.FileService;
+import io.project.ResumeProcessorBot.telegram.constant.ProgrammingLanguageButton;
 import io.project.ResumeProcessorBot.telegram.keyboard.InlineKeyBoardMarker;
+import io.project.ResumeProcessorBot.telegram.service.DocumentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.util.List;
 
-import static io.project.ResumeProcessorBot.telegram.constant.SpecialistButton.*;
+import static io.project.ResumeProcessorBot.telegram.constant.PositionButton.*;
+import static io.project.ResumeProcessorBot.telegram.constant.ProgrammingLanguageButton.*;
 
 @Slf4j
 @Component
@@ -24,8 +26,8 @@ import static io.project.ResumeProcessorBot.telegram.constant.SpecialistButton.*
 @RequiredArgsConstructor
 public class MessageHandler {
     InlineKeyBoardMarker inlineKeyBoardMarker;
-    FileService fileService;
-
+    DocumentService documentService;
+    ResumeService resumeService;
     public SendMessage answerMessage(Message message) {
         long chatId = message.getChatId();
 
@@ -78,7 +80,7 @@ public class MessageHandler {
     private SendMessage nextMessage(Long chatId) {
         String answer = "Выберите язык программирования, с которым вы работаете:";
 
-        InlineKeyboardMarkup markupInLine = inlineKeyBoardMarker.getInlineMessageButtons(SpecialistButton.class);
+        InlineKeyboardMarkup markupInLine = inlineKeyBoardMarker.getInlineMessageButtons(ProgrammingLanguageButton.class);
 
         SendMessage sendMessage = sendMessage(chatId, answer);
         sendMessage.setReplyMarkup(markupInLine);
@@ -93,32 +95,34 @@ public class MessageHandler {
     }
 
     private String processFile(Document document) {
-        String textToSend = null;
+        String result;
+        String fileText = documentService.getFileText(document);
         List<String> buttonCombination = CallbackQueryHandler.buttonCombination;
-        if (buttonCombination.size() == 1) {
-            if (buttonCombination.get(0).equals(JAVA_JUNIOR_BUTTON.name())) {
-                  textToSend = fileService.processFile(document, 3L);
-            } else if (buttonCombination.get(0).equals(JAVA_MIDDLE_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 4L);
-            } else if (buttonCombination.get(0).equals(JAVA_SENIOR_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 5L);
-            } else if (buttonCombination.get(0).equals(PYTHON_JUNIOR_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 6L);
-            } else if (buttonCombination.get(0).equals(PYTHON_MIDDLE_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 7L);
-            } else if (buttonCombination.get(0).equals(PYTHON_SENIOR_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 8L);
-            } else if (buttonCombination.get(0).equals(GO_JUNIOR_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 9L);
-            } else if (buttonCombination.get(0).equals(GO_MIDDLE_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 10L);
-            } else if (buttonCombination.get(0).equals(GO_SENIOR_BUTTON.name())) {
-                textToSend = fileService.processFile(document, 11L);
+        StringBuilder vacancyName = new StringBuilder();
+        if (buttonCombination != null && buttonCombination.size() == 2) {
+            if (buttonCombination.get(0).equals(JAVA_BUTTON.name())) {
+                vacancyName.append(JAVA_BUTTON.getButtonName());
+            } else if (buttonCombination.get(0).equals(GO_BUTTON.name())) {
+                vacancyName.append(GO_BUTTON.getButtonName());
+            } else if (buttonCombination.get(0).equals(PYTHON_BUTTON.name())) {
+                vacancyName.append(PYTHON_BUTTON.getButtonName());
             }
-        } else {
-            textToSend = "Не удалось обработать файл " + Icon.SAD.get() + " Нажмите команду /next, чтобы попробовать снова";
-        }
-        return textToSend;
-    }
 
+            vacancyName.append(" ");
+
+            if (buttonCombination.get(1).equals(JUNIOR_BUTTON.name())) {
+                vacancyName.append(JUNIOR_BUTTON.getButtonName());
+            } else if (buttonCombination.get(1).equals(MIDDLE_BUTTON.name())) {
+                vacancyName.append(MIDDLE_BUTTON.getButtonName());
+            } else if (buttonCombination.get(1).equals(SENIOR_BUTTON.name())) {
+                vacancyName.append(SENIOR_BUTTON.getButtonName());
+            }
+
+            result = resumeService.getResultResume(fileText, vacancyName.toString());
+
+        } else {
+            result = "Не удалось обработать файл " + Icon.SAD.get() + " Нажмите команду /next, чтобы попробовать снова";
+        }
+        return result;
+    }
 }
